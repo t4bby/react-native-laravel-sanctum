@@ -26,6 +26,7 @@ class AuthService {
 
       const response = await fetch(this.config.csrfTokenUrl, {
         method: 'GET',
+        mode: 'no-cors',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -80,6 +81,7 @@ class AuthService {
 
       const response = await fetch(this.config.loginUrl, {
         method: 'POST',
+        mode: 'no-cors',
         headers: await this.getRequestHeaders(),
         body: JSON.stringify({
           email,
@@ -123,6 +125,7 @@ class AuthService {
 
       const response = await fetch(this.config.logoutUrl, {
         method: 'POST',
+        mode: 'no-cors',
         headers: await this.getRequestHeaders(),
       });
 
@@ -153,6 +156,7 @@ class AuthService {
 
       const response = await fetch(this.config.userUrl, {
         method: 'GET',
+        mode: 'no-cors',
         headers: await this.getRequestHeaders(),
       });
 
