@@ -12,6 +12,7 @@ class AuthService {
     }
     this.config = authConfig;
   }
+
   private async fetchCSRFToken() {
     try {
       if (!this.config || !this.config.csrfTokenUrl) {
@@ -75,10 +76,10 @@ class AuthService {
         device_name: deviceName,
       });
 
-      const { token } = response.data.toString();
+      const token = response.data.token;
 
       if (token) {
-        await TokenStorage.saveToken(token);
+        await TokenStorage.saveToken(JSON.stringify(token).replace(/"/g, ''));
         return true;
       } else {
         return false;

@@ -1,6 +1,6 @@
 {
-  "name": "react-native-laravel-sanctum",
-  "version": "0.2.0",
+  "name": "@t4bby/react-native-laravel-sanctum",
+  "version": "0.2.10",
   "description": "React Native auth package for Laravel Sanctum integration",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -38,15 +38,15 @@
     "ios",
     "android"
   ],
-  "repository": "https://github.com/Tschucki/react-native-laravel-sanctum",
+  "repository": "git+https://github.com/t4bby/react-native-laravel-sanctum",
   "author": "Marcel Wagner <info@marcelwagner.dev> (https://www.marcelwagner.dev)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Tschucki/react-native-laravel-sanctum/issues"
+    "url": "https://github.com/t4bby/react-native-laravel-sanctum/issues"
   },
-  "homepage": "https://github.com/Tschucki/react-native-laravel-sanctum#readme",
+  "homepage": "https://github.com/t4bby/react-native-laravel-sanctum#readme",
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
+    "registry": "https://npm.pkg.github.com/t4bby"
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^17.0.2",
@@ -156,6 +156,7 @@
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.21.0",
+    "axios": "^1.6.2",
     "expo-secure-store": "^12.3.1"
   }
 }
