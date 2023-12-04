@@ -1,5 +1,6 @@
 import TokenStorage from '../utils/TokenStorage';
 import type { AuthConfig, User } from 'react-native-laravel-sanctum';
+import axios from 'axios';
 
 class AuthService {
   private readonly config: AuthConfig | null;
@@ -11,31 +12,20 @@ class AuthService {
     }
     this.config = authConfig;
   }
-
-  private async handleResponse(response: Response): Promise<void> {
-    if (!response.ok) {
-      throw new Error('Request was not successful');
-    }
-  }
-
   private async fetchCSRFToken() {
     try {
       if (!this.config || !this.config.csrfTokenUrl) {
         return;
       }
 
-      const response = await fetch(this.config.csrfTokenUrl, {
-        method: 'GET',
-        mode: 'no-cors',
+      const response = await axios.get(this.config.csrfTokenUrl, {
         headers: {
           'Content-Type': 'application/json',
         },
       });
 
-      await this.handleResponse(response);
-
       // Extrahieren des CSRF-Tokens aus dem Set-Cookie-Header
-      const setCookieHeader = response.headers.get('set-cookie');
+      const setCookieHeader = response.headers['Set-Cookie'];
       if (setCookieHeader) {
         const csrfTokenMatch = setCookieHeader.match(/XSRF-TOKEN=([^;]*)/);
         if (csrfTokenMatch) {
@@ -79,21 +69,13 @@ class AuthService {
         await this.fetchCSRFToken();
       }
 
-      const response = await fetch(this.config.loginUrl, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: await this.getRequestHeaders(),
-        body: JSON.stringify({
-          email,
-          password,
-          deviceName,
-        }),
+      const response = await axios.post(this.config.loginUrl, {
+        email: email,
+        password: password,
+        device_name: deviceName,
       });
 
-      await this.handleResponse(response);
-
-      const data = await response.json();
-      const { token } = data;
+      const { token } = response.data.toString();
 
       if (token) {
         await TokenStorage.saveToken(token);
@@ -123,13 +105,14 @@ class AuthService {
         return true;
       }
 
-      const response = await fetch(this.config.logoutUrl, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: await this.getRequestHeaders(),
-      });
+      await axios.post(
+        this.config.logoutUrl,
+        {},
+        {
+          headers: await this.getRequestHeaders(),
+        }
+      );
 
-      await this.handleResponse(response);
       await TokenStorage.removeToken();
       return true;
     } catch (error) {
@@ -154,15 +137,11 @@ class AuthService {
         await this.fetchCSRFToken();
       }
 
-      const response = await fetch(this.config.userUrl, {
-        method: 'GET',
-        mode: 'no-cors',
+      const response = await axios.get(this.config.userUrl, {
         headers: await this.getRequestHeaders(),
       });
 
-      await this.handleResponse(response);
-
-      const user = await response.json();
+      const user = response.data;
 
       if (user) {
         this.csrfToken = null;
