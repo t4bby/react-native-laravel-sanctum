@@ -146,7 +146,7 @@ class AuthService {
 
       if (user) {
         this.csrfToken = null;
-        return user;
+        return { ...user, token: currentToken };
       } else {
         return null;
       }
