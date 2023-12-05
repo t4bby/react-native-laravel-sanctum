@@ -1,6 +1,6 @@
 {
   "name": "@t4bby/react-native-laravel-sanctum",
-  "version": "0.2.10",
+  "version": "0.2.13",
   "description": "React Native auth package for Laravel Sanctum integration",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
